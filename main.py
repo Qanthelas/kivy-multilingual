@@ -1,6 +1,6 @@
 import kivy
 kivy.require('1.5.1')
-
+ 
 import gettext
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
@@ -9,12 +9,12 @@ from kivy.uix.widget import Widget
 from kivy.app import App
 from kivy.properties import ObjectProperty, StringProperty
 import os
-
+ 
 # Set up message catalog access
 dir = os.path.dirname(__file__)
 languagePath = os.path.join(dir, 'language')
 gettext.bindtextdomain('multilingual', languagePath)
-
+ 
 class Multilingual(BoxLayout):
     '''Basics for widget where we select and then test a language preference.
     '''
@@ -26,9 +26,10 @@ class Multilingual(BoxLayout):
         self.result = text + ' this is a test'
         #self.testtext = self.result
         return self.result
-
-
-
+ 
+def _(*args):
+  return App.get_running_app().get_text(*args)
+ 
 class MultilingualApp(App):
     def build(self):
         self.root = Multilingual(greeting='Translated Message Will Be Here')
@@ -39,6 +40,9 @@ class MultilingualApp(App):
         self.t = gettext.translation('multilingual', languagePath, languages=[selectedLanguage], fallback=True)
         _ = self.t.ugettext #The 'u' in 'ugettext' is for Unicode - use this to keep Unicode from breaking the app
         self.root.greeting = _('Hello!')
+ 
+    def get_text(self, *args):
+        return self.t.ugettext(*args)
     
     def build_config(self, config):
         config.add_section('localization')
@@ -52,7 +56,7 @@ class MultilingualApp(App):
               "section": "localization", "key": "language",
               "options": ["en_US", "de", "fr", "es"]}
         ]''')
-
+ 
     def on_config_change(self, config, section, key, value):
         if config is not self.config:
             return
@@ -60,6 +64,6 @@ class MultilingualApp(App):
         if token == ('localization', 'language'):
             self.set_language(value)
         print "Language is now", value
-
+ 
 if __name__ == '__main__':
     MultilingualApp().run()
