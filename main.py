@@ -21,12 +21,6 @@ class Multilingual(BoxLayout):
     label_language = ObjectProperty()
     greeting = StringProperty()
     testtext = StringProperty()
-
-    def set_language(self,selectedLanguage):
-        self.t = gettext.translation('multilingual', languagePath, languages=[selectedLanguage], fallback=True)
-        _ = self.t.ugettext #The 'u' in 'ugettext' is for Unicode - use this to keep Unicode from breaking the app
-        self.greeting = _('Hello!')
-        #return _
     
     def myfunction(self, text):
         self.result = text + ' this is a test'
@@ -38,9 +32,14 @@ class Multilingual(BoxLayout):
 class MultilingualApp(App):
     def build(self):
         self.root = Multilingual(greeting='Translated Message Will Be Here')
-        self.root.set_language('en_US')
+        self.set_language('en_US')
         #self.root.myfunction('blah')
       
+    def set_language(self,selectedLanguage):
+        self.t = gettext.translation('multilingual', languagePath, languages=[selectedLanguage], fallback=True)
+        _ = self.t.ugettext #The 'u' in 'ugettext' is for Unicode - use this to keep Unicode from breaking the app
+        self.root.greeting = _('Hello!')
+    
     def build_config(self, config):
         config.add_section('localization')
         config.set('localization', 'language', 'en_US')
@@ -59,7 +58,7 @@ class MultilingualApp(App):
             return
         token = (section, key)
         if token == ('localization', 'language'):
-            self.root.set_language(value)
+            self.set_language(value)
         print "Language is now", value
 
 if __name__ == '__main__':
