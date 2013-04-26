@@ -32,14 +32,15 @@ def _(*args):
  
 class MultilingualApp(App):
     def build(self):
-        self.root = Multilingual(greeting='Translated Message Will Be Here')
         self.set_language('en_US')
+        self.root = Multilingual(greeting='Translated Message Will Be Here')
+
         #self.root.myfunction('blah')
       
     def set_language(self,selectedLanguage):
         self.t = gettext.translation('multilingual', languagePath, languages=[selectedLanguage], fallback=True)
         _ = self.t.ugettext #The 'u' in 'ugettext' is for Unicode - use this to keep Unicode from breaking the app
-        self.root.greeting = _('Hello!')
+        #self.root.greeting = _('Hello!')
  
     def get_text(self, *args):
         return self.t.ugettext(*args)
