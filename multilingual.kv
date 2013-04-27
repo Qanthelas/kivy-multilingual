@@ -1,4 +1,5 @@
 #:kivy 1.5.1
+#:import _ main._
 
 <Multilingual>:
     label_language: my_custom_label
@@ -7,9 +8,9 @@
         #orientation: 'vertical'
         cols: 2
 
-        Label:
-            id: my_custom_label
-            text: root.myfunction('spam')
-        
-        Label:
-            text: root.greeting
+    Label:
+        id: my_custom_label
+        text: root.myfunction('spam')
+    
+    Label:
+        text: _('Hello!')
