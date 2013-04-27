@@ -33,7 +33,9 @@ def _(*args):
 class MultilingualApp(App):
     def build(self):
         self.set_language('en_US')
-        self.root = Multilingual(greeting='Translated Message Will Be Here')
+        self.root = GridLayout(cols = 1)
+        self.root.add_widget(Multilingual())
+        return self.root
 
         #self.root.myfunction('blah')
       
@@ -64,6 +66,9 @@ class MultilingualApp(App):
         token = (section, key)
         if token == ('localization', 'language'):
             self.set_language(value)
+            self.root.clear_widgets()
+            self.root.remove_widget(Multilingual())
+            self.root.add_widget(Multilingual())
         print "Language is now", value
  
 if __name__ == '__main__':
